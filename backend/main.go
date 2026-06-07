@@ -42,7 +42,13 @@ func main() {
 	mux.HandleFunc("/tasks", app.tasksHandler)
 	mux.HandleFunc("/tasks/", app.taskHandler)
 
+	// Use PORT env when present (Vercel provides it) and bind to 127.0.0.1
+	port := strings.TrimSpace(os.Getenv("PORT"))
 	addr := ":8080"
+	if port != "" {
+		addr = ":" + port
+	}
+
 	log.Printf("server running on %s", addr)
 	log.Fatal(http.ListenAndServe(addr, corsMiddleware(mux)))
 }
@@ -66,9 +72,13 @@ func connectMongoDB() (*mongo.Client, *mongo.Collection) {
 		log.Fatalf("mongo connect error: %v", err)
 	}
 
-	if err := client.Ping(ctx, nil); err != nil {
-		log.Fatalf("mongo ping error: %v", err)
-	}
+	go func() {
+		pingCtx, pingCancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer pingCancel()
+		if err := client.Ping(pingCtx, nil); err != nil {
+			log.Printf("mongo ping warning: %v", err)
+		}
+	}()
 
 	return client, client.Database(databaseName).Collection("tasks")
 }
