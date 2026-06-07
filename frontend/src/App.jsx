@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://todo-golang-server.vercel.app";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
