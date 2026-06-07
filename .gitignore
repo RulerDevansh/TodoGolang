@@ -1,0 +1,41 @@
+### Go
+# Binaries for programs and plugins
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Dependency directories (remove the comment if you vendored dependencies)
+vendor/
+
+### Node / Frontend
+node_modules/
+frontend/node_modules/
+dist/
+build/
+/.vite
+
+### Env
+.env
+.env.*
+!.env.example
+
+### IDEs and editors
+.vscode/
+.idea/
+
+### Logs and databases
+*.log
+logs/
+
+### OS files
+.DS_Store
+Thumbs.db
+
+### Coverage
+coverage.out
+
+.github/
